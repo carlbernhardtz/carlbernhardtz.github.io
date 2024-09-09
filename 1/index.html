@@ -4,12 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .image-gallery {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px; /* Adds space between the images */
+        }
+        .image-item {
+            text-align: center;
+            flex-basis: 45%; /* Adjust width of each image container */
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        figcaption {
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
-    <h1>Project 1: My First CS180 Project</h1>
-    <p>This project demonstrates ...</p>
-    <!-- Add an image if you have one -->
-    <img src="media/img1.jpg" alt="Project 1 Image" width="500">
+    <h1>Project 1: Colorizing the Prokudin-Gorskii photo collection</h1>
+    <h2>Overview</h2>
+    <p>The aim of this project was to align three pictures which were taken by Sergei Mikhailovich Prokudin-Gorskii where each
+         picture had been taken with a red, green and blue filter. The result would then resemble a "normal" color photo. All of
+          the results are presented at the bottom of the page.</p>
+    
+    <h2>SSD Alignment</h2>
+    <p>The first task was to align the jog images which had a significantly lower resolution. For these low resolution images a
+        brute force search was suggested by the project instructions using either SSD (Sum of squared differences) or NCC
+        (Normalized cross correlation). An SSD implementation was computationally slightly quicker and was therefore used
+        throughout the rest of the project and NCC was discarded. The SSD implementation uses a [-15,15] window where every pixel in
+        the images are compared to each other using SSD where there aim is to minimize SSD between the pixels. If a lower SSD is found 
+        the image then rolls using <em>np.roll()</em>. The results were better but not very good. I came to realization that it might be
+        because of the borders of the image. I therefore opted to manually crop all of the images 10% on every side. This resulted in a 
+        much better shift and final image. This was not optimal however and I therefore decided to keep the original images but instead 
+        make the searches and comparisons in a cropped image while keeping the original one for the output. This yielded the same result 
+        as for the cropped image but without actually cropping it. The result of one of the images along with the displacement in 
+        x and y are presented down below, the rest are presented at the bottom of the page.</p>
+    
+    <!-- Images side by side with captions -->
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/Original/monastery.jpg" alt="Original Monastery" width="500">
+            <figcaption>Original Monastery Image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/SSD/monastery(2,3)(2,-3).jpg" alt="Monastery" width="500">
+            <figcaption>Monastery - Shift: (2,3), (2,-3)</figcaption>
+        </figure>
+    </div>
+
+    <h2>Pyramid alignment</h2>
+    <p>The next part was to use some sort of image pyramid to align the larger <em>.tif</em> images. Using simply SSD was not viable from a computation time standpoint since the window for pixels which would need to be compared would have to be significantly larger than [-15,15].</p>
+
     <p><a href="../index.html">Back to Main Page</a></p>
 </body>
 </html>
