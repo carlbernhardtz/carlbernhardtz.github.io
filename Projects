@@ -1,0 +1,9 @@
+<carlbernhardtz>.github.io/
+├─index.html    (main page)
+├─1/
+│ ├─index.html
+│ └─media/
+│   ├─img1.jpg
+│   ├─ ⋮
+│   └─imgN.jpg
+└─2/
