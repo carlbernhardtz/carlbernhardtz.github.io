@@ -1,2 +1,2 @@
-# -carlbernhardtz-.github.io
+# carlbernhardtz.github.io
 CS 180
