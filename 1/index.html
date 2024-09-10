@@ -66,7 +66,7 @@
         from a computation time standpoint since the window for pixels which would need to be compared would have to be significantly 
         larger than [-15,15], hence the need for a pyramid. I created a Gaussian pyramid by doing the following: <br> First a list to 
         add the images to was created where the original image was added. Then the original image was blurred using 
-        <em>cv2.GaussianBlur()</em> and thereafter downsampled to half of the original image size. This new image was then added to the 
+        <em>cv2.GaussianBlur()</em> and thereafter downsampled to half of the original image size by slicing the image. This new image was then added to the 
         list and this process was then repeated four times which resulted in a total of five layers in the pyramid, including the 
         original. For example, <em>church.tif</em> original size was 3202x3634 where the most downsampled layer in that pyramid was 
         201x228. The search was done using a recursive method. The alignment starts with the most downsampled image with a search window 
