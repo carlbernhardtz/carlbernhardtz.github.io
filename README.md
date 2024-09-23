@@ -1,2 +1,2 @@
 # carlbernhardtz.github.io
-CS 180
+CS 180 Project 1
