@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project 1</title>
@@ -12,14 +14,14 @@
         .image-gallery {
             display: flex;
             justify-content: space-between;
-            gap: 20px; /* Adds space between the images */
+            gap: 10px; /* Adds space between the images */
         }
         .image-item {
             text-align: center;
-            flex-basis: 45%; /* Adjust width of each image container */
+            flex-basis: 80%; /* Adjust width of each image container */
         }
         img {
-            max-width: 100%;
+            width: 100%;
             height: auto;
         }
         figcaption {
@@ -36,28 +38,30 @@
         Another interesting application of high and low frequencies is the ability to merge images by blurring them at different 
         frequencies and them merging them all together.
     
-    <h2>SSD Alignment</h2>
-    <p>The first task was to align the jog images which had a significantly lower resolution. For these low resolution images a
-        brute force search was suggested by the project instructions using either SSD (Sum of squared differences) or NCC
-        (Normalized cross correlation). An SSD implementation was computationally slightly quicker and was therefore used
-        throughout the rest of the project and NCC was discarded. The SSD implementation uses a [-15,15] window where every pixel in
-        the images are compared to each other using SSD where there aim is to minimize SSD between the pixels. If a lower SSD is found 
-        the image then rolls using <em>np.roll()</em>. The results were better but not very good. I came to realization that it might be
-        because of the borders of the image. I therefore opted to manually crop all of the images 10% on every side. This resulted in a 
-        much better shift and final image. This was not optimal however and I therefore decided to keep the original images but instead 
-        make the searches and comparisons in a cropped image while keeping the original one for the output. This yielded the same result 
-        as for the cropped image but without actually cropping it. The result of one of the images along with the displacement in 
-        x and y are presented down below, the rest are presented at the bottom of the page.</p>
+    <h2>Finite difference operator</h2>
+    <p>The first task was to show the partial derivatives (gradients) of an image showing a cameraman. This was done by convoluting
+        the image with finite difference operators: $$D_x = \begin{bmatrix} 1 & -1 \end{bmatrix}, D_y = \begin{bmatrix} 1 \\
+         -1 \end{bmatrix}$$
+        Thereafter these two were combined to show the gradient magnitude. The gradients were also binarized, as in all edges were
+        transformed into a 1 and everything else into a 0, resulting in a black and white image were only the edges were 
+        highlighted. The results are presented down below.
+
+        
+    </p>
     
   
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/Original/monastery.jpg" alt="Original Monastery" width="500">
-            <figcaption>Original Monastery Image</figcaption>
+            <img src="media/gradx.png" alt="Original Monastery" width="700">
+            <figcaption>$$G_x$$</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/SSD/monastery(2,3)(2,-3).jpg" alt="Monastery" width="500">
-            <figcaption>Monastery - Shift: (2,3), (2,-3)</figcaption>
+            <img src="media/grady.png" alt="Monastery" width="700">
+            <figcaption>$$G_y$$</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/mag.png" alt="Monastery" width="700">
+            <figcaption>Gradient magnitude</figcaption>
         </figure>
     </div>
 
