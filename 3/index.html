@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap; /* Prevent wrapping to a new row */
+            gap: 10px; /* Adds space between the images */
+        }
+        .image-item {
+            text-align: center;
+            flex-basis: 30%; /* Adjust width of each image container */
+            margin: 0; /* Ensure no additional margin is added */
+        }
+        img {
+            width: 500px;
+            height: auto;
+        }
+        figcaption {
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <h1>Project 1: Face Morphing</h1>
+    <h2>Overview</h2>
+    <p>The aim of this project was to get an understanding of how frequencies in images work and how they can be used in different
+        ways to alter images. For example, magnifying the high frequencies in an image results in a somewhat more sharpened image.
+        Another interesting application of high and low frequencies is the ability to merge images by blurring them at different 
+        frequencies and them merging them all together.
+    
+    <h2>Defining Correspondences</h2>
+    <p>The first task was to show the partial derivatives (gradients: $G_x, G_y$) of an image showing a cameraman. This was done by convoluting
+        the image with finite difference operators: $D_x = \begin{bmatrix} 1 & -1 \end{bmatrix}, D_y = \begin{bmatrix} 1 \\
+         -1 \end{bmatrix}$
+        Thereafter these two were combined to show the gradient magnitude. The gradients were also binarized, as in all edges were
+        transformed into a 1 and everything else into a 0, resulting in a black and white image were only the edges were 
+        highlighted. The results are presented down below.
+
+        
+    </p>
+    
+  
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/carl.png" alt="Original Monastery" width="500">
+            <figcaption>A picture of me "Carl"</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/jacob.png" alt="Monastery" width="500">
+            <figcaption>A picture of my younger brother "Jacob"</figcaption>
+        </figure>
+    </div>
+
+
+    <h2>Computing midway face</h2>
+
+
+    <p>The images above were a bit noisy and to fix this they were smoothed using a Gaussian filter which was constructed 
+        Gaussian kernels. The kernels were created using the function <em>cv2.getGaussianKernel()</em> and the images were 
+        using a kernel size of 10 and the standard deviation (<em>sigma</em>) was set to 1. After the smoothing the images were 
+        transformed in the same way as before. This is clearly a smoother and not as noisy result.
+    </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/gradx.png" alt="Original Monastery" width="500">
+            <figcaption>$G_x$ with Gaussian blur</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/grady.png" alt="Monastery" width="500">
+            <figcaption>$G_y$ with Gaussian blur</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/mag.png" alt="Monastery" width="500">
+            <figcaption>Gradient magnitude with Gaussian blur</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/gxbin.png" alt="Original Monastery" width="500">
+            <figcaption>$G_x$ binarized with Gaussian blur</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/gybin.png" alt="Monastery" width="500">
+            <figcaption>$G_y$ binarized with Gaussian blur</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/gcomb.png" alt="Monastery" width="500">
+            <figcaption>Gradient magnitude binarized with Gaussian blur</figcaption>
+        </figure>
+    </div>
+
+
+    <p>Instead of convoluting the kernels with the gradients of the image the kernels themselves were convoluted with the finite
+        difference operators which results in the derivative of these kernels. The kernels were then convoluted with the original 
+        image to compute the partial derivatives of the image and then these were combines in the same way as before. The results 
+        displayed below.
+    </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/gradx2.png" alt="Original Monastery" width="500">
+            <figcaption>$G_x$ binarized with Gaussian blur</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/grady2.png" alt="Monastery" width="500">
+            <figcaption>$G_y$ binarized with Gaussian blur</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/gmag2.png" alt="Monastery" width="500">
+            <figcaption>Gradient magnitude binarized with Gaussian blur</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/binx2.png" alt="Original Monastery" width="500">
+            <figcaption>$G_x$ with Gaussian blur</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/biny2.png" alt="Monastery" width="500">
+            <figcaption>$G_y$ with Gaussian blur</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/bincomb2.png" alt="Monastery" width="500">
+            <figcaption>Gradient magnitude with Gaussian blur</figcaption>
+        </figure>
+    </div>
+
+    <p>As you can see there is barely any noticeable difference between the two ways of using the Gaussian kernels.</p>
+
+    <h2>Image sharpening</h2>
+
+    <p>To sharpen images, the original image was filtered using a Gaussian filter were the high frequencies were removed. The 
+        difference between this image and the original image is an image inly containing the high frequencies. By adding the 
+        original image with the high frequencies, the image can appear to be "sharpened". Two examples of this is displayed below.</p>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/taj.png" alt="Monastery" width="500">
+                <figcaption>Original Taj Mahal image</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/tajsharp.png" alt="Monastery" width="500">
+                <figcaption>"Sharpened" Taj Mahal image</figcaption>
+            </figure>
+        </div>
+
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/bild.png" alt="Monastery" width="500">
+                <figcaption>Original image</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/bild1.png" alt="Monastery" width="500">
+                <figcaption>"Sharpened" image</figcaption>
+            </figure>
+        </div>
+
+    <h3>Sharpening a blurred image</h3>
+    
+    <p>To see how well the sharpening works an image was first blurred and then sharpened. The results are displayed below.
+        As you can see the sharpening doesn't quite do the job since a lot of the high frequencies cannot be retrieved.
+    </p>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/bild3.png" alt="Original Monastery" width="500">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/blur1.png" alt="Monastery" width="500">
+            <figcaption>Blurred image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/sharp1.png" alt="Monastery" width="500">
+            <figcaption>Sharpened image</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/bild4.png" alt="Original Monastery" width="500">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/blur2.png" alt="Monastery" width="500">
+            <figcaption>Blurred image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/sharp2.png" alt="Monastery" width="500">
+            <figcaption>Sharpened image</figcaption>
+        </figure>
+    </div>
+
+    <h2>Hybrid images</h2>
+    <p>By removing the high frequencies from one image and the low frequencies from another and then laying them on top of
+        each other we can get something called a hybrid image. When you look at the image up close it looks like the high 
+        frequency image but when you look at it from far away it looks like the low frequency image. Below are two examples of 
+        hybrid images.<p>
+
+            <div class="image-gallery">
+                <figure class="image-item">
+                    <img src="media/cat.png" alt="Original Monastery" width="500">
+                    <figcaption>Image used for high <em>f</em></figcaption>
+                </figure>
+                <figure class="image-item">
+                    <img src="media/derek.png" alt="Monastery" width="500">
+                    <figcaption>Image used for low <em>f</em></figcaption>
+                </figure>
+                <figure class="image-item">
+                    <img src="media/hybrid1.png" alt="Monastery" width="500">
+                    <figcaption>Hybrid image</figcaption>
+                </figure>
+            </div>
+            <div class="image-gallery">
+                <figure class="image-item">
+                    <img src="media/tiger.png" alt="Original Monastery" width="500">
+                    <figcaption>Image used for high frequency</figcaption>
+                </figure>
+                <figure class="image-item">
+                    <img src="media/sten.png" alt="Monastery" width="500">
+                    <figcaption>Image used for low frequency</figcaption>
+                </figure>
+                <figure class="image-item">
+                    <img src="media/hybrid2.png" alt="Monastery" width="500">
+                    <figcaption>Hybrid image</figcaption>
+                </figure>
+            </div>
+            <h3>Fast Fourier transform</h3>
+            <p>For the image with the cat the fast fourier transform are presented down below.</p>
+            <div class="image-gallery">
+                <figure class="image-item">
+                    <img src="media/fftcat.png" alt="Original Monastery" width="500">
+                    <figcaption>Image used for high frequency</figcaption>
+                </figure>
+                <figure class="image-item">
+                    <img src="media/fftderek.png" alt="Monastery" width="500">
+                    <figcaption>Image used for low frequency ("Derek")</figcaption>
+                </figure>
+                <figure class="image-item">
+                    <img src="media/ffthybrid.png" alt="Monastery" width="500">
+                    <figcaption>Hybrid image</figcaption>
+                </figure>
+            </div>
+    <p>Also the original images using the fast fourier transform are presented down below.</p>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/fftd.png" alt="Monastery" width="500">
+            <figcaption>Fast fourier transform on "Derek"</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/fftc.png" alt="Monastery" width="500">
+            <figcaption>Fast Fourier transform on cat</figcaption>
+        </figure>
+    </div>
+
+    <h2>Gaussian and laplacian stacks</h2>
+    <p>In this part laplacian stacks were made using gaussian stacks. Down below, the result from using a laplacian stack
+        and displaying every level (five were used) on an apple and an orange.
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/lap1.png" alt="Monastery" width="500">
+                <figcaption>Apple - Level 1</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/lor1.png" alt="Monastery" width="500">
+                <figcaption>Orange - Level 1</figcaption>
+            </figure>
+        </div>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/lap2.png" alt="Monastery" width="500">
+                <figcaption>Apple - Level 2</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/lor2.png" alt="Monastery" width="500">
+                <figcaption>Orange - Level 2</figcaption>
+            </figure>
+        </div>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/lap3.png" alt="Monastery" width="500">
+                <figcaption>Apple - Level 3</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/lor3.png" alt="Monastery" width="500">
+                <figcaption>Orange - Level 3</figcaption>
+            </figure>
+        </div>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/lap4.png" alt="Monastery" width="500">
+                <figcaption>Apple - Level 4</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/lor4.png" alt="Monastery" width="500">
+                <figcaption>Orange - Level 4</figcaption>
+            </figure>
+        </div>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/lap5.png" alt="Monastery" width="500">
+                <figcaption>Apple - Level 5</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/lor5.png" alt="Monastery" width="500">
+                <figcaption>Orange - Level 3</figcaption>
+            </figure>
+        </div>
+
+    <h2>Multiresolution blending</h2>
+
+    <p>For the last part, the purpose was to blend different images using a mask. The first images which were an apple and an 
+        orange are presented down below. The result isn't quite as good as the one shown in the paper by Burt and Adelson but still
+        alright in my opinion.</p>
+
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/apple.png" alt="Original Monastery" width="500">
+                <figcaption>Apple</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/orange.png" alt="Monastery" width="500">
+                <figcaption>Orange</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/orangeapple.png" alt="Monastery" width="500">
+                <figcaption>Oraple image</figcaption>
+            </figure>
+        </div>
+
+        <p>Down below is a failed attempt at blending a green apple and a tennis ball.</p>
+
+
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/apple2.png" alt="Original Monastery" width="500">
+                <figcaption>Green apple</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/tennis.png" alt="Monastery" width="500">
+                <figcaption>Tennis ball</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/Tapple.png" alt="Monastery" width="500">
+                <figcaption>Tapple</figcaption>
+            </figure>
+        </div>
+        <p>Lastly I used an irregular mask to change the football into a an orange which  is displayed below.</p>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/zlatan.png" alt="Original Monastery" width="500">
+                <figcaption>Zlatan Ibrahimovic</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/orange2.png" alt="Monastery" width="500">
+                <figcaption>Orange</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/ballmask.png" alt="Monastery" width="500">
+                <figcaption>Irregular mask</figcaption>
+            </figure>
+        </div>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/ozlatan.png" alt="Monastery" width="500">
+                <figcaption>Zlatan with an orange</figcaption>
+            </figure>
+        </div>
+        <h2>Bells & whistles</h2>
+        <p>All implementations were made with colors.</p>
+
+    </p>
+    <p><a href="../index.html">Back to Main Page</a></p>
+</body>
+</html>
