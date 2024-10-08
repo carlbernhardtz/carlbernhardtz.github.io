@@ -22,7 +22,7 @@
             margin: 0; /* Ensure no additional margin is added */
         }
         img {
-            width: 300px;
+            width: 350px;
             height: auto;
         }
         figcaption {
@@ -44,19 +44,14 @@
 <body>
     <h1>Project 1: Face Morphing</h1>
     <h2>Overview</h2>
-    <p>The aim of this project was to get an understanding of how frequencies in images work and how they can be used in different
-        ways to alter images. For example, magnifying the high frequencies in an image results in a somewhat more sharpened image.
-        Another interesting application of high and low frequencies is the ability to merge images by blurring them at different 
-        frequencies and them merging them all together.
+    <p>The goal of this project was to accomplish a morph between two images. That was done by establishing a correspondence between
+        the two images. The mapping should align key facial features such as eyes to eyes, mouth to mouth, chin to chin and so on, 
+        on both images. Using these keypoints a triangulation could be made from which the main goal of the project could be derived, 
+        morphing images into each other.
     
     <h2>Defining Correspondences</h2>
-    <p>The first task was to show the partial derivatives (gradients: $G_x, G_y$) of an image showing a cameraman. This was done by convoluting
-        the image with finite difference operators: $D_x = \begin{bmatrix} 1 & -1 \end{bmatrix}, D_y = \begin{bmatrix} 1 \\
-         -1 \end{bmatrix}$
-        Thereafter these two were combined to show the gradient magnitude. The gradients were also binarized, as in all edges were
-        transformed into a 1 and everything else into a 0, resulting in a black and white image were only the edges were 
-        highlighted. The results are presented down below.
-
+    <p>The first task was to define these corresponding keypoints and performing the triangulation. Firstly the images were cropped into 
+        the same size and the faces were aligned to some extent. These images are displayed below.
         
     </p>
     
@@ -72,44 +67,28 @@
         </figure>
     </div>
 
-
-    <h2>Computing midway face</h2>
-
-
-    <p>The images above were a bit noisy and to fix this they were smoothed using a Gaussian filter which was constructed 
-        Gaussian kernels. The kernels were created using the function <em>cv2.getGaussianKernel()</em> and the images were 
-        using a kernel size of 10 and the standard deviation (<em>sigma</em>) was set to 1. After the smoothing the images were 
-        transformed in the same way as before. This is clearly a smoother and not as noisy result.
+    <p> Then a provided online tool was used to set the correspondences and then the triangulation was made using the 
+        <em>scipy.spatial.Delaunay</em> function in python. This resulted in the triangular meshgrid displayed below.
     </p>
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/gradx.png" alt="Original Monastery" width="500">
-            <figcaption>$G_x$ with Gaussian blur</figcaption>
+            <img src="media/carl_tri.png" alt="Original Monastery" width="500">
+            <figcaption>Carl: Keypoints and triangulation</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/grady.png" alt="Monastery" width="500">
-            <figcaption>$G_y$ with Gaussian blur</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/mag.png" alt="Monastery" width="500">
-            <figcaption>Gradient magnitude with Gaussian blur</figcaption>
+            <img src="media/jacob_tri.png" alt="Monastery" width="500">
+            <figcaption>Jacob: Keypoints and triangulation</figcaption>
         </figure>
     </div>
-    <div class="image-gallery">
-        <figure class="image-item">
-            <img src="media/gxbin.png" alt="Original Monastery" width="500">
-            <figcaption>$G_x$ binarized with Gaussian blur</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/gybin.png" alt="Monastery" width="500">
-            <figcaption>$G_y$ binarized with Gaussian blur</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/gcomb.png" alt="Monastery" width="500">
-            <figcaption>Gradient magnitude binarized with Gaussian blur</figcaption>
-        </figure>
-    </div>
+
+    <h2>Computing midway face</h2>
+
+
+    <p>
+    </p>
+
+   
 
 
     <p>Instead of convoluting the kernels with the gradients of the image the kernels themselves were convoluted with the finite
