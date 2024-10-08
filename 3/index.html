@@ -108,74 +108,22 @@
         </figure>
     </div>
 
-   
 
+    <h2>The Morph Sequence</h2>
 
-    <p>Instead of convoluting the kernels with the gradients of the image the kernels themselves were convoluted with the finite
-        difference operators which results in the derivative of these kernels. The kernels were then convoluted with the original 
-        image to compute the partial derivatives of the image and then these were combines in the same way as before. The results 
-        displayed below.
+    <p> The next task was to create a sequence of the warps so you can see how one image gradually turns into another. Using different 
+        fractions of the warping and cross-dissolving coefficients <em>\in [0,1]</em> this resulted in a morphed sequence with 45 different 
+        images and a frame rate of 30 fps. The result is shown below.
+        
     </p>
-
-    <div class="image-gallery">
-        <figure class="image-item">
-            <img src="media/gradx2.png" alt="Original Monastery" width="500">
-            <figcaption>$G_x$ binarized with Gaussian blur</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/grady2.png" alt="Monastery" width="500">
-            <figcaption>$G_y$ binarized with Gaussian blur</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/gmag2.png" alt="Monastery" width="500">
-            <figcaption>Gradient magnitude binarized with Gaussian blur</figcaption>
-        </figure>
-    </div>
-    <div class="image-gallery">
-        <figure class="image-item">
-            <img src="media/binx2.png" alt="Original Monastery" width="500">
-            <figcaption>$G_x$ with Gaussian blur</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/biny2.png" alt="Monastery" width="500">
-            <figcaption>$G_y$ with Gaussian blur</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/bincomb2.png" alt="Monastery" width="500">
-            <figcaption>Gradient magnitude with Gaussian blur</figcaption>
-        </figure>
-    </div>
-
-    <p>As you can see there is barely any noticeable difference between the two ways of using the Gaussian kernels.</p>
-
-    <h2>Image sharpening</h2>
-
-    <p>To sharpen images, the original image was filtered using a Gaussian filter were the high frequencies were removed. The 
-        difference between this image and the original image is an image inly containing the high frequencies. By adding the 
-        original image with the high frequencies, the image can appear to be "sharpened". Two examples of this is displayed below.</p>
         <div class="image-gallery">
             <figure class="image-item">
-                <img src="media/taj.png" alt="Monastery" width="500">
-                <figcaption>Original Taj Mahal image</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/tajsharp.png" alt="Monastery" width="500">
-                <figcaption>"Sharpened" Taj Mahal image</figcaption>
+                <img src="media/carl_jacob_morph.gif" alt="Monastery" width="500">
+                <figcaption>Morphing sequence between me and my brother.</figcaption>
             </figure>
         </div>
 
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/bild.png" alt="Monastery" width="500">
-                <figcaption>Original image</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/bild1.png" alt="Monastery" width="500">
-                <figcaption>"Sharpened" image</figcaption>
-            </figure>
-        </div>
-
-    <h3>Sharpening a blurred image</h3>
+    <h3>The "Mean face" of a population</h3>
     
     <p>To see how well the sharpening works an image was first blurred and then sharpened. The results are displayed below.
         As you can see the sharpening doesn't quite do the job since a lot of the high frequencies cannot be retrieved.
