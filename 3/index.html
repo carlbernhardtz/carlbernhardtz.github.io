@@ -162,54 +162,33 @@
         </figure>
     </div>
 
-    <h2>Hybrid images</h2>
-    <p>By removing the high frequencies from one image and the low frequencies from another and then laying them on top of
-        each other we can get something called a hybrid image. When you look at the image up close it looks like the high 
-        frequency image but when you look at it from far away it looks like the low frequency image. Below are two examples of 
-        hybrid images.<p>
+    <p>To compute the average face, all of the warped images were added together and then by calculating the mean of these images the average
+        was computed. This was done for males and females separately. As you may notice the average male face looks a bit smoother and in my
+        opinion more computer generated. This is probably due to the fact that the dataset for the males is more than four times as large and 
+        thus a more averaged image could be achieved.
+            <div class="image-gallery">
+                <figure class="image-item">
+                    <img src="media/avg_m_dane.png" alt="Original Monastery" width="500">
+                    <figcaption>Average male Dane <em>f</em></figcaption>
+                </figure>
+                <figure class="image-item">
+                    <img src="media/avg_f_dane.png" alt="Monastery" width="500">
+                    <figcaption>Average female Dane <em>f</em></figcaption>
+                </figure>
 
-            <div class="image-gallery">
-                <figure class="image-item">
-                    <img src="media/cat.png" alt="Original Monastery" width="500">
-                    <figcaption>Image used for high <em>f</em></figcaption>
-                </figure>
-                <figure class="image-item">
-                    <img src="media/derek.png" alt="Monastery" width="500">
-                    <figcaption>Image used for low <em>f</em></figcaption>
-                </figure>
-                <figure class="image-item">
-                    <img src="media/hybrid1.png" alt="Monastery" width="500">
-                    <figcaption>Hybrid image</figcaption>
-                </figure>
             </div>
+
+    <p>After having computed the average Danish faces my face was warped into the average Danish male face and the average Danish male face
+        was warped into mine.
+    </p>
             <div class="image-gallery">
                 <figure class="image-item">
-                    <img src="media/tiger.png" alt="Original Monastery" width="500">
-                    <figcaption>Image used for high frequency</figcaption>
+                    <img src="media/carl_dane.png" alt="Original Monastery" width="500">
+                    <figcaption>Me with a Danish shape</figcaption>
                 </figure>
                 <figure class="image-item">
-                    <img src="media/sten.png" alt="Monastery" width="500">
-                    <figcaption>Image used for low frequency</figcaption>
-                </figure>
-                <figure class="image-item">
-                    <img src="media/hybrid2.png" alt="Monastery" width="500">
-                    <figcaption>Hybrid image</figcaption>
-                </figure>
-            </div>
-            <h3>Fast Fourier transform</h3>
-            <p>For the image with the cat the fast fourier transform are presented down below.</p>
-            <div class="image-gallery">
-                <figure class="image-item">
-                    <img src="media/fftcat.png" alt="Original Monastery" width="500">
-                    <figcaption>Image used for high frequency</figcaption>
-                </figure>
-                <figure class="image-item">
-                    <img src="media/fftderek.png" alt="Monastery" width="500">
-                    <figcaption>Image used for low frequency ("Derek")</figcaption>
-                </figure>
-                <figure class="image-item">
-                    <img src="media/ffthybrid.png" alt="Monastery" width="500">
-                    <figcaption>Hybrid image</figcaption>
+                    <img src="media/dane_carl.png" alt="Monastery" width="500">
+                    <figcaption>A Dane with my shape</figcaption>
                 </figure>
             </div>
     <p>Also the original images using the fast fourier transform are presented down below.</p>
