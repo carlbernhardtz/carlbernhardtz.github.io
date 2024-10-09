@@ -86,7 +86,7 @@
 
 
     <p>The next task was to compute the mid-way face of the two images, i.e the midway morph of the two images. This was done by computing 
-        the average shape of the triangulation with the following formula: $$Average points = Carl's points * 0.5 + Jacob's points * 0.5$$
+        the average shape of the triangulation with the following formula: $$\text{Average points} = \text{Carl's points} * 0.5 + \text{Jacob's points} * 0.5$$
         Then the inverse of the affine transformation matrix was computed between the triangles in the images. Using the 
         <em>skimage.draw.polygon</em> function, masks were made for every triangle. These masks were then used to warp all pixels inside the
         triangular mask instead of looping over every pixel. The triangles were warped using an inverse warp. Lastly, a cross-dissolve was used
@@ -217,7 +217,8 @@
     <h2>Bells and Whistles</h2>
 
     <p>For the bells and whistles I tried to change my gender using the average female Danish face. This was done by both warping my face
-        to the average female Danish face but also dissolving the images. The result was not too great though unfortunately.</p>
+        to the average female Danish face but also dissolving the images. The result was not too great though unfortunately. One reason for this is that
+        all of the images of the Danish females were taken with a green background which makes the dissolve a lot worse </p>
         <div class="image-gallery">
             <figure class="image-item">
                 <img src="media/carl_dane_f.png"  width="450">
