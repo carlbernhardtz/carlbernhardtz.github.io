@@ -58,11 +58,11 @@
   
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/carl.png" alt="Original Monastery" width="500">
+            <img src="media/carl.png"  width="500">
             <figcaption>A picture of me "Carl"</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/jacob.png" alt="Monastery" width="500">
+            <img src="media/jacob.png"  width="500">
             <figcaption>A picture of my younger brother "Jacob"</figcaption>
         </figure>
     </div>
@@ -73,11 +73,11 @@
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/carl_tri.png" alt="Original Monastery" width="500">
+            <img src="media/carl_tri.png"  width="500">
             <figcaption>Carl: Keypoints and triangulation</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/jacob_tri.png" alt="Monastery" width="500">
+            <img src="media/jacob_tri.png"  width="500">
             <figcaption>Jacob: Keypoints and triangulation</figcaption>
         </figure>
     </div>
@@ -95,15 +95,15 @@
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/carl.png" alt="Original Monastery" width="500">
+            <img src="media/carl.png"  width="500">
             <figcaption>Carl</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/carl_jacob_midway.png" alt="Monastery" width="500">
+            <img src="media/carl_jacob_midway.png"  width="500">
             <figcaption>Mid-way face</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/jacob.png" alt="Monastery" width="500">
+            <img src="media/jacob.png"  width="500">
             <figcaption>Jacob</figcaption>
         </figure>
     </div>
@@ -118,11 +118,18 @@
     </p>
         <div class="image-gallery">
             <figure class="image-item">
-                <img src="media/carl_jacob_morph.gif" alt="Monastery" width="500">
+                <img src="media/carl_jacob_morph.gif"  width="500">
                 <figcaption>Morphing sequence between me and my brother.</figcaption>
             </figure>
         </div>
 
+    <p>I also made a morph sequence between Mark Zuckerberg and Matthew McConaughey which is shown below.</p>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/mark_matthew_morph.gif"width="500">
+            <figcaption>Morphing sequence between me and my brother.</figcaption>
+        </figure>
+    </div>
     <h3>The "Mean face" of a population</h3>
     
     <p>Now it was time to compute the average face of a population. The dataset I chose only consists of 37 images of Danish 
@@ -155,12 +162,12 @@
         thus a more averaged image could be achieved.
             <div class="image-gallery">
                 <figure class="image-item">
-                    <img src="media/avg_m_dane.png" alt="Original Monastery" width="500">
-                    <figcaption>Average male Dane <em>f</em></figcaption>
+                    <img src="media/avg_m_dane.png"  width="500">
+                    <figcaption>Average male Dane </figcaption>
                 </figure>
                 <figure class="image-item">
-                    <img src="media/avg_f_dane.png" alt="Monastery" width="500">
-                    <figcaption>Average female Dane <em>f</em></figcaption>
+                    <img src="media/avg_f_dane.png"  width="500">
+                    <figcaption>Average female Dane</figcaption>
                 </figure>
 
             </div>
@@ -170,143 +177,39 @@
     </p>
             <div class="image-gallery">
                 <figure class="image-item">
-                    <img src="media/carl_dane.png" alt="Original Monastery" width="500">
+                    <img src="media/carl_dane.png"  width="500">
                     <figcaption>Me with a Danish shape</figcaption>
                 </figure>
                 <figure class="image-item">
-                    <img src="media/dane_carl.png" alt="Monastery" width="500">
+                    <img src="media/dane_carl.png"  width="500">
                     <figcaption>A Dane with my shape</figcaption>
                 </figure>
             </div>
-    <p>Also the original images using the fast fourier transform are presented down below.</p>
-    <div class="image-gallery">
-        <figure class="image-item">
-            <img src="media/fftd.png" alt="Monastery" width="500">
-            <figcaption>Fast fourier transform on "Derek"</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/fftc.png" alt="Monastery" width="500">
-            <figcaption>Fast Fourier transform on cat</figcaption>
-        </figure>
-    </div>
+    
+    <h2>Caricatures: Extrapolating from the mean</h2>
+    <p>In the last part a caricature from my face was made by extrapolating from the population mean in the previous part. I tried using
+        different alphas, below are two examples of this.
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/carl_c05.png"  width="500">
+                <figcaption>Alpha = 0.5</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/carl_c15.png"  width="500">
+                <figcaption>Alpha = 1.5</figcaption>
+            </figure>
+        </div>
+    <h2>Bells and Whistles</h2>
 
-    <h2>Gaussian and laplacian stacks</h2>
-    <p>In this part laplacian stacks were made using gaussian stacks. Down below, the result from using a laplacian stack
-        and displaying every level (five were used) on an apple and an orange.
+    <p>For the bells and whistles I tried to change my gender using the average female Danish face. This was done by both warping my face
+        to the average female Danish face but also dissolving the images. The result was not too great though unfortunately.</p>
         <div class="image-gallery">
             <figure class="image-item">
-                <img src="media/lap1.png" alt="Monastery" width="500">
-                <figcaption>Apple - Level 1</figcaption>
+                <img src="media/carl_dane_f.png"  width="500">
+                <figcaption>Me as a Danish woman</figcaption>
             </figure>
-            <figure class="image-item">
-                <img src="media/lor1.png" alt="Monastery" width="500">
-                <figcaption>Orange - Level 1</figcaption>
-            </figure>
-        </div>
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/lap2.png" alt="Monastery" width="500">
-                <figcaption>Apple - Level 2</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/lor2.png" alt="Monastery" width="500">
-                <figcaption>Orange - Level 2</figcaption>
-            </figure>
-        </div>
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/lap3.png" alt="Monastery" width="500">
-                <figcaption>Apple - Level 3</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/lor3.png" alt="Monastery" width="500">
-                <figcaption>Orange - Level 3</figcaption>
-            </figure>
-        </div>
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/lap4.png" alt="Monastery" width="500">
-                <figcaption>Apple - Level 4</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/lor4.png" alt="Monastery" width="500">
-                <figcaption>Orange - Level 4</figcaption>
-            </figure>
-        </div>
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/lap5.png" alt="Monastery" width="500">
-                <figcaption>Apple - Level 5</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/lor5.png" alt="Monastery" width="500">
-                <figcaption>Orange - Level 3</figcaption>
-            </figure>
-        </div>
 
-    <h2>Multiresolution blending</h2>
-
-    <p>For the last part, the purpose was to blend different images using a mask. The first images which were an apple and an 
-        orange are presented down below. The result isn't quite as good as the one shown in the paper by Burt and Adelson but still
-        alright in my opinion.</p>
-
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/apple.png" alt="Original Monastery" width="500">
-                <figcaption>Apple</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/orange.png" alt="Monastery" width="500">
-                <figcaption>Orange</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/orangeapple.png" alt="Monastery" width="500">
-                <figcaption>Oraple image</figcaption>
-            </figure>
         </div>
-
-        <p>Down below is a failed attempt at blending a green apple and a tennis ball.</p>
-
-
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/apple2.png" alt="Original Monastery" width="500">
-                <figcaption>Green apple</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/tennis.png" alt="Monastery" width="500">
-                <figcaption>Tennis ball</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/Tapple.png" alt="Monastery" width="500">
-                <figcaption>Tapple</figcaption>
-            </figure>
-        </div>
-        <p>Lastly I used an irregular mask to change the football into a an orange which  is displayed below.</p>
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/zlatan.png" alt="Original Monastery" width="500">
-                <figcaption>Zlatan Ibrahimovic</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/orange2.png" alt="Monastery" width="500">
-                <figcaption>Orange</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/ballmask.png" alt="Monastery" width="500">
-                <figcaption>Irregular mask</figcaption>
-            </figure>
-        </div>
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/ozlatan.png" alt="Monastery" width="500">
-                <figcaption>Zlatan with an orange</figcaption>
-            </figure>
-        </div>
-        <h2>Bells & whistles</h2>
-        <p>All implementations were made with colors.</p>
-
-    </p>
     <p><a href="../index.html">Back to Main Page</a></p>
 </body>
 </html>
