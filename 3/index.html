@@ -18,11 +18,11 @@
         }
         .image-item {
             text-align: center;
-            flex-basis: 30%; /* Adjust width of each image container */
+            flex-basis: auto; /* Allow the image to take its natural size */
             margin: 0; /* Ensure no additional margin is added */
         }
         img {
-            width: 500px;
+            max-width: 100%; /* Ensure images scale down but not exceed their container */
             height: auto;
         }
         figcaption {
@@ -113,23 +113,20 @@
 
     <p> The next task was to create a sequence of the warps so you can see how one image gradually turns into another. Using different 
         fractions of the warping and cross-dissolving coefficients <em>\in [0,1]</em> this resulted in a morphed sequence with 45 different 
-        images and a frame rate of 30 fps. The result is shown below.
+        images and a frame rate of 30 fps. I also made a morph sequence between Mark Zuckerberg and Matthew McConaughey. The results are 
+        shown below.
         
     </p>
         <div class="image-gallery">
             <figure class="image-item">
-                <img src="media/carl_jacob_morph.gif"  width="500">
-                <figcaption>Morphing sequence between me and my brother.</figcaption>
+                <img src="media/carl_jacob_morph2.gif"  width="400">
+                <figcaption>Morphing sequence between me and my brother</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/mark_matthew_morph2.gif"width="400">
+                <figcaption>Morphing sequence between Mark Zuckerberg and Matthew McConaughey</figcaption>
             </figure>
         </div>
-
-    <p>I also made a morph sequence between Mark Zuckerberg and Matthew McConaughey which is shown below.</p>
-    <div class="image-gallery">
-        <figure class="image-item">
-            <img src="media/mark_matthew_morph.gif"width="500">
-            <figcaption>Morphing sequence between me and my brother.</figcaption>
-        </figure>
-    </div>
     <h3>The "Mean face" of a population</h3>
     
     <p>Now it was time to compute the average face of a population. The dataset I chose only consists of 37 images of Danish 
@@ -138,19 +135,37 @@
     </p>
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/dane1.png">
+            <img src="media/dane1.png" width="350" >
             <figcaption>Original image</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/dane_warp1.png">
+            <img src="media/dane_warp1.png"width="350">
             <figcaption>Warped image</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/dane2.png">
+            <img src="media/dane2.png"width="350">
             <figcaption>Original image</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/dane_warp2.png">
+            <img src="media/dane_warp2.png"width="350">
+            <figcaption>Warped image</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/danef1.png" width="350" >
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/danef_warp1.png"width="350">
+            <figcaption>Warped image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/danef2.png"width="350">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/danef_warp2.png"width="350">
             <figcaption>Warped image</figcaption>
         </figure>
     </div>
@@ -162,11 +177,11 @@
         thus a more averaged image could be achieved.
             <div class="image-gallery">
                 <figure class="image-item">
-                    <img src="media/avg_m_dane.png"  width="500">
+                    <img src="media/avg_m_dane.png"  width="450">
                     <figcaption>Average male Dane </figcaption>
                 </figure>
                 <figure class="image-item">
-                    <img src="media/avg_f_dane.png"  width="500">
+                    <img src="media/avg_f_dane.png"  width="450">
                     <figcaption>Average female Dane</figcaption>
                 </figure>
 
@@ -177,11 +192,11 @@
     </p>
             <div class="image-gallery">
                 <figure class="image-item">
-                    <img src="media/carl_dane.png"  width="500">
+                    <img src="media/carl_dane.png"  width="450">
                     <figcaption>Me with a Danish shape</figcaption>
                 </figure>
                 <figure class="image-item">
-                    <img src="media/dane_carl.png"  width="500">
+                    <img src="media/dane_carl.png"  width="450">
                     <figcaption>A Dane with my shape</figcaption>
                 </figure>
             </div>
@@ -191,11 +206,11 @@
         different alphas, below are two examples of this.
         <div class="image-gallery">
             <figure class="image-item">
-                <img src="media/carl_c05.png"  width="500">
+                <img src="media/carl_c05.png"  width="450">
                 <figcaption>Alpha = 0.5</figcaption>
             </figure>
             <figure class="image-item">
-                <img src="media/carl_c15.png"  width="500">
+                <img src="media/carl_c15.png"  width="450">
                 <figcaption>Alpha = 1.5</figcaption>
             </figure>
         </div>
@@ -205,7 +220,7 @@
         to the average female Danish face but also dissolving the images. The result was not too great though unfortunately.</p>
         <div class="image-gallery">
             <figure class="image-item">
-                <img src="media/carl_dane_f.png"  width="500">
+                <img src="media/carl_dane_f.png"  width="450">
                 <figcaption>Me as a Danish woman</figcaption>
             </figure>
 
