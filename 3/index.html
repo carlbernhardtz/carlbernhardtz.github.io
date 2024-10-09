@@ -42,7 +42,7 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <h1>Project 1: Face Morphing</h1>
+    <h1>Project 3: Face Morphing</h1>
     <h2>Overview</h2>
     <p>The goal of this project was to accomplish a morph between two images. That was done by establishing a correspondence between
         the two images. The mapping should align key facial features such as eyes to eyes, mouth to mouth, chin to chin and so on, 
@@ -125,20 +125,25 @@
 
     <h3>The "Mean face" of a population</h3>
     
-    <p>To see how well the sharpening works an image was first blurred and then sharpened. The results are displayed below.
-        As you can see the sharpening doesn't quite do the job since a lot of the high frequencies cannot be retrieved.
+    <p>Now it was time to compute the average face of a population. The dataset I chose only consists of 37 images of Danish 
+        people where 30 are male and 7 are female. The average shape of Danish males and females respectively, were computed and then the 
+        images were warped into this shape. Below are some examples.
     </p>
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/bild3.png" alt="Original Monastery" width="500">
+            <img src="media/dane1.png" alt="Original Monastery" width="300">
             <figcaption>Original image</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/blur1.png" alt="Monastery" width="500">
-            <figcaption>Blurred image</figcaption>
+            <img src="media/dane_warp1.png" alt="Monastery" width="300">
+            <figcaption>Warped image</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/sharp1.png" alt="Monastery" width="500">
+            <img src="media/dane2.png" alt="Monastery" width="300">
+            <figcaption>Sharpened image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/dane_warp2.png" alt="Monastery" width="300">
             <figcaption>Sharpened image</figcaption>
         </figure>
     </div>
