@@ -7,23 +7,51 @@
     <title>Project 1</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+    
+        .container {
+            max-width: 800px; /* Limit the width of the content to 800px */
+            margin: 40px auto; /* Center the content horizontally */
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+            border-radius: 8px;
+            text-align: center;
+        }
+    
+        h1, h2, h3, h4 {
+            text-align: left; /* Center all headers */
+            margin-left: 250px;
+            margin-bottom: 40px;
+            margin-top: 40px;
+        
+        }
+    
+        p {
+            line-height: 1.6;
+            text-align: left;
+            margin-bottom: 20px;
+            margin-left: 300px;
+            margin-right: 300px;
         }
         .image-gallery {
             display: flex;
             justify-content: center;
             flex-wrap: nowrap; /* Prevent wrapping to a new row */
-            gap: 10px; /* Adds space between the images */
+            gap: 20px; /* Adds space between the images */
         }
         .image-item {
             text-align: center;
             flex-basis: auto; /* Allow the image to take its natural size */
-            margin: 0; /* Ensure no additional margin is added */
+            margin: 40px; /* Ensure no additional margin is added */
         }
         img {
             max-width: 100%; /* Ensure images scale down but not exceed their container */
-            height: auto;
+            /*height: auto;*/
         }
         figure {
             display: inline-block; /* Ensures figure and image stay close together */
@@ -32,8 +60,8 @@
         }
         figcaption {
             margin-top: 5px;
-            font-style: italic;
             text-align: center;
+            font-size: large;
         }
     </style>
 
@@ -97,21 +125,21 @@
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/IMG5.jpeg"  width="500">
+            <img src="media/mac.jpeg"  height="600">
             <figcaption>Original image of MacBook</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/mac_rect.png"  width="500">
+            <img src="media/mac_rect.jpeg"  height="600">
             <figcaption>Rectified image of a MacBook</figcaption>
         </figure>
     </div>
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/rubiks.png"  width="500">
+            <img src="media/rub.jpeg"  height="600">
             <figcaption>Original image of a Rubik's Cube</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/rubiks_rect.png"  width="500">
+            <img src="media/rub_rect.jpeg"  height="600">
             <figcaption>Rectified image of a Rubik's Cube</figcaption>
         </figure>
     </div>
@@ -156,24 +184,26 @@
          cohesive result without too noticeable artifacts.
         </p>
         
-    <h3>Results</h3>
+    <h2>Results</h2>
 
-    Three different mosaics were created. The source images and the results are presented down below.
-
+    <p>Three different mosaics were created. There are still some small artifacts left. In the mosaic of my room, the exposure in the two images 
+    were quite different and therefore the blending was not perfect. In the other two mosaics you can see some slight blurring where the 
+    images are stitched together. But all in all, an ok result in my opinion. The source images and the results are presented down below.
+</p>
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/IMG6.jpeg"  width="500">
+            <img src="media/mof1.jpeg"  width="500">
             <figcaption>Image before in Moffitt Library </figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/IMG7.jpeg"  width="500">
+            <img src="media/mof2.jpeg"  width="500">
             <figcaption>Second image in Moffitt Library</figcaption>
         </figure>
     </div>
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/mosaic_mof.png"  width="900">
+            <img src="media/mosaic_mof.jpeg"  width="900">
             <figcaption>Mosaic</figcaption>
         </figure>
     </div>
@@ -191,7 +221,7 @@
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/mosaic_room.png"  width="900">
+            <img src="media/mosaic_room.jpeg"  width="900">
             <figcaption>Mosaic</figcaption>
         </figure>
     </div>
@@ -210,10 +240,11 @@
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/mosaic_roof.png"  width="900">
+            <img src="media/mosaic_roof.jpeg"  width="900">
             <figcaption>Mosaic</figcaption>
         </figure>
     </div>
+
 
     <p><a href="../index.html">Back to Main Page</a></p>
 </body>
