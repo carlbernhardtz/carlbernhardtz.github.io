@@ -101,159 +101,114 @@
     </div>
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/rubiks.jpeg"  width="500">
+            <img src="media/rubiks.png"  width="500">
             <figcaption>Original image of a Rubik's Cube</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/rubiks_rect.jpeg"  width="500">
+            <img src="media/rubiks_rect.png"  width="500">
             <figcaption>Rectified image of a Rubik's Cube</figcaption>
         </figure>
     </div>
 
-    <h2>Computing the "Mid-way Face"</h2>
+    <h2>Image Mosaicing</h2>
 
-
-    <p>The next task was to compute the mid-way face of the two images, i.e the midway morph of the two images. This was done by computing 
-        the average shape of the triangulation with the following formula: $$\text{Average points} = \text{Carl's points} * 0.5 + \text{Jacob's points} * 0.5$$
-        Then the inverse of the affine transformation matrix was computed between the triangles in the images. Using the 
-        <em>skimage.draw.polygon</em> function, masks were made for every triangle. These masks were then used to warp all pixels inside the
-        triangular mask instead of looping over every pixel. The triangles were warped using an inverse warp. Lastly, a cross-dissolve was used
-        to blend the colors of the images. The results are presented down below.
-    </p>
-
-    <div class="image-gallery">
-        <figure class="image-item">
-            <img src="media/carl.png"  width="500">
-            <figcaption>Carl</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/carl_jacob_midway.png"  width="500">
-            <figcaption>Mid-way face</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/jacob.png"  width="500">
-            <figcaption>Jacob</figcaption>
-        </figure>
-    </div>
-
-
-    <h2>The Morph Sequence</h2>
-
-    <p> The next task was to create a sequence of the warps so you can see how one image gradually turns into another. Using different 
-        fractions of the warping and cross-dissolving coefficients \( \in [0,1] \) this resulted in a morphed sequence with 45 different 
-        images and a frame rate of 30 fps. I also made a morph sequence between Mark Zuckerberg and Matthew McConaughey. The results are 
-        shown below.
+    <p>
+        The mosaic blending process combines two images seamlessly into one by warping one image to align with the other and creating a
+         transition between them. The steps involved are as follows:
+        </p>
         
-    </p>
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/carl_jacob_morph2.gif"  width="400">
-                <figcaption>Morphing sequence between me and my brother</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/mark_matthew_morph2.gif"width="400">
-                <figcaption>Morphing sequence between Mark Zuckerberg and Matthew McConaughey</figcaption>
-            </figure>
-        </div>
-    <h3>The "Mean face" of a population</h3>
-    
-    <p>Now it was time to compute the average face of a population. The dataset I chose only consists of 37 images of Danish 
-        people where 30 are male and 7 are female. The average shape of Danish males and females respectively, were computed and then the 
-        images were warped into this shape. Below are some examples.
-    </p>
+        <h4>1. Warping the First Image</h4>
+        <p>
+        The first image is transformed using a homography matrix, which aligns it with the perspective of the second image. After warping,
+         the bounding box for both images is determined. This ensures the final output can hold both images by calculating the minimal and
+          maximal coordinates of the two images.
+        </p>
+        
+        <h4>2. Preparing images</h4>
+        <p>
+        Two empty images are created, large enough to contain both the warped and non-warped images. The warped image is placed into the first 
+        image, and the non-warped image is placed into the second image, with correct offsets applied to ensure proper alignment. This was by far 
+        the most time consuming and frustrating part of this project.
+        </p>
+        
+        <h4>3. Creating a Transition</h4>
+        <p>
+        A blending mask is generated to handle the transition between the two images. This is done by creating binary masks of the non-empty regions
+         of both images. Then, the distance of each pixel from the nearest edge is calculated to create a gradual transition between the two images.
+          The distances are normalized to produce a transition mask, which determines how the two images will blend together.
+        </p>
+        
+        <h4>4. Blending the Images</h4>
+        <p>
+        The blending mask is applied to both images, ensuring that the two images transition smoothly in the overlapping region. The pixels from
+         each image are combined based on the values of the mask, resulting in a seamless blend where the images overlap.
+        </p>
+        
+        <h4>5. Final Mosaic</h4>
+        <p>
+        The final mosaic is created by combining the two images into one, with a transition in the overlapping regions, producing a visually
+         cohesive result without too noticeable artifacts.
+        </p>
+        
+    <h3>Results</h3>
+
+    Three different mosaics were created. The source images and the results are presented down below.
+
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/dane1.png" width="350" >
-            <figcaption>Original image</figcaption>
+            <img src="media/IMG6.jpeg"  width="500">
+            <figcaption>Image before in Moffitt Library </figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/dane_warp1.png"width="350">
-            <figcaption>Warped image</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/dane2.png"width="350">
-            <figcaption>Original image</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/dane_warp2.png"width="350">
-            <figcaption>Warped image</figcaption>
-        </figure>
-    </div>
-    <div class="image-gallery">
-        <figure class="image-item">
-            <img src="media/danef1.png" width="350" >
-            <figcaption>Original image</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/danef_warp1.png"width="350">
-            <figcaption>Warped image</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/danef2.png"width="350">
-            <figcaption>Original image</figcaption>
-        </figure>
-        <figure class="image-item">
-            <img src="media/danef_warp2.png"width="350">
-            <figcaption>Warped image</figcaption>
+            <img src="media/IMG6.jpeg"  width="500">
+            <figcaption>Second imzage in Moffitt Library</figcaption>
         </figure>
     </div>
 
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/mosaic_mof.png"  width="500">
+            <figcaption>Mosaic</figcaption>
+        </figure>
+    </div>
 
-    <p>To compute the average face, all of the warped images were added together and then by calculating the mean of these images the average
-        was computed. This was done for males and females separately. As you may notice the average male face looks a bit smoother and in my
-        opinion more computer generated. This is probably due to the fact that the dataset for the males is more than four times as large and 
-        thus a more averaged image could be achieved.
-            <div class="image-gallery">
-                <figure class="image-item">
-                    <img src="media/avg_m_dane.png"  width="450">
-                    <figcaption>Average male Dane </figcaption>
-                </figure>
-                <figure class="image-item">
-                    <img src="media/avg_f_dane.png"  width="450">
-                    <figcaption>Average female Dane</figcaption>
-                </figure>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/room1.jpeg"  width="500">
+            <figcaption>Image before warping in my room </figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/room2.jpeg"  width="500">
+            <figcaption>Second imzage in my room</figcaption>
+        </figure>
+    </div>
 
-            </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/mosaic_room.png"  width="500">
+            <figcaption>Mosaic</figcaption>
+        </figure>
+    </div>
 
-    <p>After having computed the average Danish faces my face was warped into the average Danish male face and the average Danish male face
-        was warped into mine.
-    </p>
-            <div class="image-gallery">
-                <figure class="image-item">
-                    <img src="media/carl_dane.png"  width="450">
-                    <figcaption>Me with a Danish shape</figcaption>
-                </figure>
-                <figure class="image-item">
-                    <img src="media/dane_carl.png"  width="450">
-                    <figcaption>A Dane with my shape</figcaption>
-                </figure>
-            </div>
-    
-    <h2>Caricatures: Extrapolating from the mean</h2>
-    <p>In the last part a caricature from my face was made by extrapolating from the population mean in the previous part. I tried using
-        different alphas, below are two examples of this.
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/carl_c05.png"  width="450">
-                <figcaption>Alpha = 0.5</figcaption>
-            </figure>
-            <figure class="image-item">
-                <img src="media/carl_c15.png"  width="450">
-                <figcaption>Alpha = 1.5</figcaption>
-            </figure>
-        </div>
-    <h2>Bells and Whistles</h2>
 
-    <p>For the bells and whistles I tried to change my gender using the average female Danish face. This was done by both warping my face
-        to the average female Danish face but also dissolving the images. The result was not too great though unfortunately. One reason for this is that
-        all of the images of the Danish females were taken with a green background which makes the dissolve a lot worse. </p>
-        <div class="image-gallery">
-            <figure class="image-item">
-                <img src="media/carl_dane_f.png"  width="450">
-                <figcaption>Me as a Danish woman</figcaption>
-            </figure>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/roof1.jpeg"  width="500">
+            <figcaption>Image before warping from the roof </figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/roof2.jpeg"  width="500">
+            <figcaption>Second imzage from the roof</figcaption>
+        </figure>
+    </div>
 
-        </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/mosaic_roof.png"  width="500">
+            <figcaption>Mosaic</figcaption>
+        </figure>
+    </div>
+
     <p><a href="../index.html">Back to Main Page</a></p>
 </body>
 </html>
