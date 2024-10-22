@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap; /* Prevent wrapping to a new row */
+            gap: 10px; /* Adds space between the images */
+        }
+        .image-item {
+            text-align: center;
+            flex-basis: auto; /* Allow the image to take its natural size */
+            margin: 0; /* Ensure no additional margin is added */
+        }
+        img {
+            max-width: 100%; /* Ensure images scale down but not exceed their container */
+            height: auto;
+        }
+        figcaption {
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <h1>Project 3: IMAGE WARPING and MOSAICING</h1>
+    <h1>Part A</h1>
+    <p>The goal of this project was to warp images and change their perspective and subsequently create a panoramic looking image.
+    
+    <h2>Recover Homographies</h2>
+
+    <p>
+        The <code>computeH</code> function calculates the homography matrix \( H \) that maps points from one image to another using corresponding point pairs.
+        </p>
+        
+        <p>
+        For each point pair \( (x_1, y_1) \) in <code>im1_pts</code> and \( (x_2, y_2) \) in <code>im2_pts</code>, we append two rows to matrix \( A \):
+        </p>
+        
+        <p>
+        $$
+        \begin{pmatrix} x_1 & y_1 & 1 & 0 & 0 & 0 & -x_1 x_2 & -y_1 x_2 \end{pmatrix}
+        $$
+        $$
+        \begin{pmatrix} 0 & 0 & 0 & x_1 & y_1 & 1 & -x_1 y_2 & -y_1 y_2 \end{pmatrix}
+        $$
+        </p>
+        
+        <p>
+        We solve for \( h \) using least squares and reshape it into the final homography matrix:
+        </p>
+        
+        <p>
+        $$
+        H = \begin{pmatrix} 
+        h_{11} & h_{12} & h_{13} \\
+        h_{21} & h_{22} & h_{23} \\
+        h_{31} & h_{32} & 1 
+        \end{pmatrix}
+        $$
+        </p>
+
+    <p> Then a provided online tool was used to set the correspondences and then the triangulation was made using the 
+        <em>scipy.spatial.Delaunay</em> function in python. This resulted in the triangular meshgrid displayed below.
+    </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/carl_tri.png"  width="500">
+            <figcaption>Carl: Keypoints and triangulation</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/jacob_tri.png"  width="500">
+            <figcaption>Jacob: Keypoints and triangulation</figcaption>
+        </figure>
+    </div>
+
+    <h2>Computing the "Mid-way Face"</h2>
+
+
+    <p>The next task was to compute the mid-way face of the two images, i.e the midway morph of the two images. This was done by computing 
+        the average shape of the triangulation with the following formula: $$\text{Average points} = \text{Carl's points} * 0.5 + \text{Jacob's points} * 0.5$$
+        Then the inverse of the affine transformation matrix was computed between the triangles in the images. Using the 
+        <em>skimage.draw.polygon</em> function, masks were made for every triangle. These masks were then used to warp all pixels inside the
+        triangular mask instead of looping over every pixel. The triangles were warped using an inverse warp. Lastly, a cross-dissolve was used
+        to blend the colors of the images. The results are presented down below.
+    </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/carl.png"  width="500">
+            <figcaption>Carl</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/carl_jacob_midway.png"  width="500">
+            <figcaption>Mid-way face</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/jacob.png"  width="500">
+            <figcaption>Jacob</figcaption>
+        </figure>
+    </div>
+
+
+    <h2>The Morph Sequence</h2>
+
+    <p> The next task was to create a sequence of the warps so you can see how one image gradually turns into another. Using different 
+        fractions of the warping and cross-dissolving coefficients \( \in [0,1] \) this resulted in a morphed sequence with 45 different 
+        images and a frame rate of 30 fps. I also made a morph sequence between Mark Zuckerberg and Matthew McConaughey. The results are 
+        shown below.
+        
+    </p>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/carl_jacob_morph2.gif"  width="400">
+                <figcaption>Morphing sequence between me and my brother</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/mark_matthew_morph2.gif"width="400">
+                <figcaption>Morphing sequence between Mark Zuckerberg and Matthew McConaughey</figcaption>
+            </figure>
+        </div>
+    <h3>The "Mean face" of a population</h3>
+    
+    <p>Now it was time to compute the average face of a population. The dataset I chose only consists of 37 images of Danish 
+        people where 30 are male and 7 are female. The average shape of Danish males and females respectively, were computed and then the 
+        images were warped into this shape. Below are some examples.
+    </p>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/dane1.png" width="350" >
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/dane_warp1.png"width="350">
+            <figcaption>Warped image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/dane2.png"width="350">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/dane_warp2.png"width="350">
+            <figcaption>Warped image</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/danef1.png" width="350" >
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/danef_warp1.png"width="350">
+            <figcaption>Warped image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/danef2.png"width="350">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/danef_warp2.png"width="350">
+            <figcaption>Warped image</figcaption>
+        </figure>
+    </div>
+
+
+    <p>To compute the average face, all of the warped images were added together and then by calculating the mean of these images the average
+        was computed. This was done for males and females separately. As you may notice the average male face looks a bit smoother and in my
+        opinion more computer generated. This is probably due to the fact that the dataset for the males is more than four times as large and 
+        thus a more averaged image could be achieved.
+            <div class="image-gallery">
+                <figure class="image-item">
+                    <img src="media/avg_m_dane.png"  width="450">
+                    <figcaption>Average male Dane </figcaption>
+                </figure>
+                <figure class="image-item">
+                    <img src="media/avg_f_dane.png"  width="450">
+                    <figcaption>Average female Dane</figcaption>
+                </figure>
+
+            </div>
+
+    <p>After having computed the average Danish faces my face was warped into the average Danish male face and the average Danish male face
+        was warped into mine.
+    </p>
+            <div class="image-gallery">
+                <figure class="image-item">
+                    <img src="media/carl_dane.png"  width="450">
+                    <figcaption>Me with a Danish shape</figcaption>
+                </figure>
+                <figure class="image-item">
+                    <img src="media/dane_carl.png"  width="450">
+                    <figcaption>A Dane with my shape</figcaption>
+                </figure>
+            </div>
+    
+    <h2>Caricatures: Extrapolating from the mean</h2>
+    <p>In the last part a caricature from my face was made by extrapolating from the population mean in the previous part. I tried using
+        different alphas, below are two examples of this.
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/carl_c05.png"  width="450">
+                <figcaption>Alpha = 0.5</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/carl_c15.png"  width="450">
+                <figcaption>Alpha = 1.5</figcaption>
+            </figure>
+        </div>
+    <h2>Bells and Whistles</h2>
+
+    <p>For the bells and whistles I tried to change my gender using the average female Danish face. This was done by both warping my face
+        to the average female Danish face but also dissolving the images. The result was not too great though unfortunately. One reason for this is that
+        all of the images of the Danish females were taken with a green background which makes the dissolve a lot worse. </p>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/carl_dane_f.png"  width="450">
+                <figcaption>Me as a Danish woman</figcaption>
+            </figure>
+
+        </div>
+    <p><a href="../index.html">Back to Main Page</a></p>
+</body>
+</html>
