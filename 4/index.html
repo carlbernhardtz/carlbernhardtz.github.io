@@ -25,9 +25,15 @@
             max-width: 100%; /* Ensure images scale down but not exceed their container */
             height: auto;
         }
+        figure {
+            display: inline-block; /* Ensures figure and image stay close together */
+            margin: 0; /* Remove any default margin */
+            padding: 0; /* Remove any default padding */
+        }
         figcaption {
             margin-top: 5px;
             font-style: italic;
+            text-align: center;
         }
     </style>
 
@@ -95,7 +101,7 @@
             <figcaption>Original image of MacBook</figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/mac_rect.jpeg"  width="500">
+            <img src="media/mac_rect.png"  width="500">
             <figcaption>Rectified image of a MacBook</figcaption>
         </figure>
     </div>
@@ -160,14 +166,14 @@
             <figcaption>Image before in Moffitt Library </figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/IMG6.jpeg"  width="500">
-            <figcaption>Second imzage in Moffitt Library</figcaption>
+            <img src="media/IMG7.jpeg"  width="500">
+            <figcaption>Second image in Moffitt Library</figcaption>
         </figure>
     </div>
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/mosaic_mof.png"  width="700">
+            <img src="media/mosaic_mof.png"  width="900">
             <figcaption>Mosaic</figcaption>
         </figure>
     </div>
@@ -185,7 +191,7 @@
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/mosaic_room.png"  width="700">
+            <img src="media/mosaic_room.png"  width="900">
             <figcaption>Mosaic</figcaption>
         </figure>
     </div>
@@ -204,7 +210,7 @@
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/mosaic_roof.png"  width="700">
+            <img src="media/mosaic_roof.png"  width="900">
             <figcaption>Mosaic</figcaption>
         </figure>
     </div>
