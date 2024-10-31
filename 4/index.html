@@ -42,7 +42,7 @@
             display: flex;
             justify-content: center;
             flex-wrap: nowrap; /* Prevent wrapping to a new row */
-            gap: 20px; /* Adds space between the images */
+            gap: 5px; /* Adds space between the images */
         }
         .image-item {
             text-align: center;
@@ -62,6 +62,9 @@
             margin-top: 5px;
             text-align: center;
             font-size: large;
+        }
+        .feature-patches-caption {
+            margin-top: -60px; /* Adjust this value to control the spacing */
         }
     </style>
 
@@ -210,18 +213,18 @@
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/room1.jpeg"  width="500">
-            <figcaption>Image before warping in my room </figcaption>
+            <img src="media/out1.jpeg"  width="500">
+            <figcaption>Image before warping from my bedroom window </figcaption>
         </figure>
         <figure class="image-item">
-            <img src="media/room2.jpeg"  width="500">
-            <figcaption>Second image in my room</figcaption>
+            <img src="media/out2.jpeg"  width="500">
+            <figcaption>Second image from my bedroom window</figcaption>
         </figure>
     </div>
 
     <div class="image-gallery">
         <figure class="image-item">
-            <img src="media/mosaic_room.jpeg"  width="900">
+            <img src="media/mosaic_out.jpeg"  width="900">
             <figcaption>Mosaic</figcaption>
         </figure>
     </div>
@@ -245,6 +248,123 @@
         </figure>
     </div>
 
+    <h1>Part B</h1>
+    <h2>Corner Detection</h2>
+
+    <p>First, the given code for Harris corner detection was run in order to compute the interest points in the image. These interest points
+        were way too many which is displayed below.
+    </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/harris_c.png"  width="900">
+            <figcaption>Harris corner</figcaption>
+        </figure>
+    </div>
+
+    <h2>Adaptive Non-maximal Suppression (ANMS)</h2>
+    <p>
+        This approach uses the adaptive non-maximal suppression (ANMS) algorithm to select well-separated interest points.
+        It calculates a distance, \( r_i \), for each interest point \( \vec{x}_i \) to its nearest point \( \vec{x}_j \) with a significantly
+         higher corner response. Specifically, it finds the minimum distance to any \( \vec{x}_j \) such 
+         that \( h(\vec{x}_i) < c_{\text{robust}} \cdot h(\vec{x}_j) \). Only the top-K points with the largest \( r_i \) values are kept, 
+         ensuring that interest points are not clustered together but spread evenly across the image. The result is displayed below.
+    </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/anms_pts.png"  width="900">
+            <figcaption>Keypoints with ANMS</figcaption>
+        </figure>
+    </div>
+
+    <h2>Feature Extraction</h2>
+    <p>Using the calculated interest points, feature patches were extracted for each points. Patches were taken around specific interest
+         points in the image. Each patch was centered on the point and sized to avoid interference from edge effects. To standardize the
+          patches, their intensity values were normalized by adjusting for mean and variance, ensuring consistent contrast.
+           Each patch was then resized to a smaller, uniform scale, making the data compact and optimized for subsequent processing and 
+           comparison. The patches are displayed below.</p>
+
+
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/patches.png"  width="600">
+                <figcaption class="feature-patches-caption">Feature Patches</figcaption>
+            </figure>
+        </div>
+
+    <h2>Feature Matching</h2>
+        <p>Having the feature extraction in place, it was now time to match features in two images. For each patch in the first image, distances
+             to patches in the second were calculated based on the sum of squared differences (SSD). To ensure reliable matches, Lowe's ratio
+              test was applied, comparing the closest and second-closest matches for each feature. This filtering step helped retain only
+               robust matches, which were then output as corresponding coordinates in both images. The result is displayed below.</p>
+
+               <div class="image-gallery">
+                <figure class="image-item">
+                    <img src="media/feat_match.png"  width="900">
+                    <figcaption>Matching Features</figcaption>
+                </figure>
+                </div>
+
+    <h2>RANSAC</h2>
+    <p>The feature matching may seem solid but there can still be outliers present. Therefore we turn to RANSAC - 
+        <em>Random sample consensus</em>. This is used to ensure a robust transformation by handling outliers in the matched points. By 
+        iteratively selecting random subsets of matches to compute possible homographies, RANSAC identifies the transformation with the most
+         inliers, discarding mismatches. This approach yields an accurate homography that aligns the images, even when only a subset of matches
+        is correct. The difference when using RANSAC and not is displayed below.
+    </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/feat_match.png"  width="600">
+            <figcaption>Matched points without using RANSAC </figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/ransac_pts.png"  width="600">
+            <figcaption>Matched points using RANSAC</figcaption>
+        </figure>
+    </div>
+
+    <h2>Results</h2>
+    <p>The results for the manual mosaicing and the "automatic" keypoint detection and stitching are displayed alongside each other down below.
+    </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/mosaic_mof.jpeg"  width="600">
+            <figcaption>Manual Mosaic </figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/mof_stitch.jpeg"  width="600">
+            <figcaption>Auto-stitched Mosaic</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/mosaic_out.jpeg"  width="600">
+            <figcaption>Manual Mosaic </figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/out_stitch.jpeg"  width="600">
+            <figcaption>Auto-stitched Mosaic</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/mosaic_roof.jpeg"  width="600">
+            <figcaption>Manual Mosaic </figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/roof_stitch.jpeg"  width="600">
+            <figcaption>Auto-stitched Mosaic</figcaption>
+        </figure>
+    </div>
+    <p>There are some slight differences but the overall result is largely the same. In then first mosaic there is some blurring at the bottom 
+        where the images are stitched. This is better in the automated one. The same goes for the last mosaic where some blurring occurs at the 
+        seam in the manual one where the automatic one handles it better. The automatic corner detection, stitching etc. is 
+        thus in my opinion, deemed successful. The coolest thing about this project for me is the automatization of processes. Being able to 
+    choose the correct keypoints without manual labor is really fascinating.</p>
 
     <p><a href="../index.html">Back to Main Page</a></p>
 </body>
