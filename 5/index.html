@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 1</title>
+    <style>
+        body {
+            font-family: Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+    
+        .container {
+            max-width: 800px; /* Limit the width of the content to 800px */
+            margin: 40px auto; /* Center the content horizontally */
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+            border-radius: 8px;
+            text-align: center;
+        }
+    
+        h1, h2, h3, h4 {
+            text-align: left; /* Center all headers */
+            margin-left: 250px;
+            margin-bottom: 40px;
+            margin-top: 40px;
+        
+        }
+    
+        p {
+            line-height: 1.6;
+            text-align: left;
+            margin-bottom: 20px;
+            margin-left: 300px;
+            margin-right: 300px;
+        }
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap; /* Prevent wrapping to a new row */
+            gap: 5px; /* Adds space between the images */
+        }
+        .image-item {
+            text-align: center;
+            flex-basis: auto; /* Allow the image to take its natural size */
+            margin: 10px; /* Ensure no additional margin is added */
+        }
+        img {
+            max-width: 100%; /* Ensure images scale down but not exceed their container */
+            /*height: auto;*/
+        }
+        figure {
+            display: inline-block; /* Ensures figure and image stay close together */
+            margin: 0; /* Remove any default margin */
+            padding: 0; /* Remove any default padding */
+        }
+        figcaption {
+            margin-top: 5px;
+            text-align: center;
+            font-size: medium;
+        }
+        .feature-patches-caption {
+            margin-top: -60px; /* Adjust this value to control the spacing */
+        }
+    </style>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <h1>Project 5: FUN WITH DIFFUSION MODELS!</h1>
+    <h1>Part A: The Power of Diffusion Models! </h1>
+    <p>
+    
+    <h2>Setup</h2>
+
+    <p>Firstly three images were sampled using <code>seed = 45</code> with the text prompts in the captions. First 20 interference
+    steps were used and then 50. The quality of the images were not really affected in my opinion, maybe the second image of
+    a man wearing a hat is slightly more realistic.</p>
+
+    <p>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/snowy_20.png"  height="300">
+                <figcaption>An oil painting of a snowy mountain village</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/man_20.png"  height="300">
+                <figcaption>A man wearing a hat</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/rocket_20.png"  height="300">
+                <figcaption>A rocket ship</figcaption>
+            </figure>
+        </div>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/snowy_50.png"  height="300">
+                <figcaption>An oil painting of a snowy mountain village</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/man_50.png"  height="300">
+                <figcaption>A man wearing a hat</figcaption>
+            </figure>
+            <figure class="image-item">
+                <img src="media/rocket_50.png"  height="300">
+                <figcaption>A rocket ship</figcaption>
+            </figure>
+        </div>
+    
+
+    <p>
+
+    <h2>Sampling loops</h2>
+
+    <p>In this part sampling loops were written by using the pre-trained DeepFloyd denoisers.</p>
+    <h3>Implementing the Forward process</h3>
+
+    <p>The forward process adds noise to a clean image <code>x_0</code> to produce a noisy image <code>x_t</code> at 
+        timestep <code>t</code>:</p>
+
+    $$x_t = \sqrt{\alpha_t}x_0 + \sqrt{1 - \alpha_t}\epsilon, \quad \epsilon \sim \mathcal{N}(0, 1)$$
+    
+    <p>Noise increases with <code>t</code>, controlled by <code>\alpha_t</code>. Show results for 
+        <code>t = [250, 500, 750]</code>. The original image is displyed down below and thereafter the noised images.</p>
+
+    
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/test_im.png"  height="250">
+            <figcaption>Berkeley Campanile</figcaption>
+        </figure>
+        
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_1_250.png"  height="250">
+            <figcaption>Berkeley Campanile at t = 250</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_1_500.png"  height="250">
+            <figcaption>Berkeley Campanile at t = 500</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_1_750.png"  height="250">
+            <figcaption>Berkeley Campanile at t = 750</figcaption>
+        </figure>
+    </div>
+
+
+    <h3>Classical Denoising</h3>
+    <p>Classical denoising was implemented by applying Gaussian blur to the noisy images. The images were processed 
+        for <code>t = [250, 500, 750]</code>, and the results are displayed below.</p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_1_250.png"  height="200">
+            <figcaption>Noise at t = 250</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_2_250.png"  height="200">
+            <figcaption>After denoising</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_1_500.png"  height="200">
+            <figcaption>Noise at t = 500</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_2_500.png"  height="200">
+            <figcaption>After denoising</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_1_750.png"  height="200">
+            <figcaption>Noise at t = 750</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_2_750.png"  height="200">
+            <figcaption>After denoising</figcaption>
+        </figure>
+    </div>
+
+
+    <h3>One-Step Denoising</h3>
+    <p>I used a pretrained diffusion model to denoise the images. The denoiser, implemented as <code>stage_1.unet</code>, 
+        is a UNet trained on a large dataset of image pairs. It recovers the Gaussian noise from the noisy image and removes 
+        it to approximate the original image.<p>
+
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/test_im.png"  height="200">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_1_250.png"  height="200">
+            <figcaption>Noisy image at t = 250</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_3_c_250.png"  height="200">
+            <figcaption>Clean image at t = 250</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/test_im.png"  height="200">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_1_500.png"  height="200">
+            <figcaption>Noisy image at t = 500</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_3_c_500.png"  height="200">
+            <figcaption>Clean image at t = 500</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/test_im.png"  height="200">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_1_750.png"  height="200">
+            <figcaption>Noisy image at t = 750</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_3_c_750.png"  height="200">
+            <figcaption>Clean image at t = 750</figcaption>
+        </figure>
+    </div>
+
+
+
+    <h3>Iterative Denoising</h3>
+
+    <p>I created <code>strided_timesteps</code>, a list of monotonically decreasing timesteps starting at 990, with a stride of 30, and ending at 0. The timesteps were initialized using the function <code>stage_1.scheduler.set_timesteps(timesteps=strided_timesteps)</code>.</p>
+
+    <p>The noisy image was displayed every 5th iteration of the denoising process, showing a gradual reduction in noise. The final predicted clean image was obtained using iterative denoising and displayed alongside comparisons to the results of single-step denoising, which appeared much worse, and Gaussian blurring from part 1.2.</p>
+
+    
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_4_690.png"  height="200">
+            <figcaption>Noisy image at t = 690</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_4_540.png"  height="200">
+            <figcaption>Noisy image at t = 540</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_4_390.png"  height="200">
+            <figcaption>Noisy image at t = 390</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_4_240.png"  height="200">
+            <figcaption>Noisy image at t = 240</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_4_90.png"  height="200">
+            <figcaption>Noisy image at t = 90</figcaption>
+        </figure>
+    </div>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_4_gauss.png"  height="200">
+            <figcaption>Gaussian</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_4_one.png"  height="200">
+            <figcaption>One-step</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_4_iterative.png"  height="200">
+            <figcaption>Iterative</figcaption>
+        </figure>
+    </div>
+
+
+
+    <h3>Diffusion Model Sampling</h3>
+
+    <p>Images were generated from scratch using a diffusion model by denoising random noise. Random noise tensors were 
+        created with <code>torch.randn</code> and processed through the <code>iterative_denoise</code> function. The prompt 
+        embedding "a high quality photo" guided the generation, producing five different images.</p>
+
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_5_rand1.png"  height="200">
+            <figcaption>Random image 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_5_rand2.png"  height="200">
+            <figcaption>Random image 2</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_5_rand3.png"  height="200">
+            <figcaption>Random image 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_5_rand4.png"  height="200">
+            <figcaption>Random image 4</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_5_rand5.png"  height="200">
+            <figcaption>Random image 5</figcaption>
+        </figure>
+    </div>
+
+    <h3>Classifier-Free Guidance (CFG)</h3>
+    <p>Classifier-Free Guidance (CFG) was used to improve image quality by combining conditional and unconditional noise
+         estimates with a scaling factor, <code>γ</code>, set to 7. The <code>iterative_denoise_cfg</code> function was 
+         implemented to denoise images using both a prompt embedding for "a high quality photo" and an empty prompt embedding 
+         for unconditional guidance. At each timestep, the UNet model was run twice to compute the conditional and unconditional 
+         noise estimates, which were combined using the CFG formula. This process was repeated five times, producing images with 
+         significantly enhanced quality compared to the previous part.</p>
+
+
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_6_rand1.png"  height="200">
+            <figcaption>Random image 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_6_rand2.png"  height="200">
+            <figcaption>Random image 2</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_6_rand3.png"  height="200">
+            <figcaption>Random image 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_6_rand4.png"  height="200">
+            <figcaption>Random image 4</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_6_rand5.png"  height="200">
+            <figcaption>Random image 5</figcaption>
+        </figure>
+    </div>
+
+    <h3>Image-to-image Translation</h3>
+    <p>I applied the <code>iterative_denoise_cfg</code> function to the test image, adding noise and then denoising it with 
+        starting indices of [1, 3, 5, 7, 10, 20]. The denoising process was guided by the prompt "a high quality photo" and 
+        used a CFG scale of 7. To explore the method further, I repeated this process on two additional test images, demonstrating
+         its versatility. Noteworthy is that the model tended to generate images featuring women, even when the original content 
+         was unrelated.</p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_im1_1.png"  height="160">
+            <figcaption>Noise level = 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im1_3.png"  height="160">
+            <figcaption>Noise level = 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im1_5.png"  height="160">
+            <figcaption>Noise level = 5</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im1_7.png"  height="160">
+            <figcaption>Noise level = 7</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im1_10.png"  height="160">
+            <figcaption>Noise level = 10</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im1_20.png"  height="160">
+            <figcaption>Noise level = 20</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/test_im.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_im2_1.png"  height="160">
+            <figcaption>Noise level = 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im2_3.png"  height="160">
+            <figcaption>Noise level = 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im2_5.png"  height="160">
+            <figcaption>Noise level = 5</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im2_7.png"  height="160">
+            <figcaption>Noise level = 7</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im2_10.png"  height="160">
+            <figcaption>Noise level = 10</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im2_20.png"  height="160">
+            <figcaption>Noise level = 20</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im2org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_im3_1.png"  height="160">
+            <figcaption>Noise level = 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im3_3.png"  height="160">
+            <figcaption>Noise level = 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im3_5.png"  height="160">
+            <figcaption>Noise level = 5</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im3_7.png"  height="160">
+            <figcaption>Noise level = 7</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im3_10.png"  height="160">
+            <figcaption>Noise level = 10</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im3_20.png"  height="160">
+            <figcaption>Noise level = 20</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_im3org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+    </div>
+
+    <h4>Editing Hand-Drawn and Web Images</h4>
+    <p>The same was done but this time for a non-realistic image where the first one if from the internet and the second two
+        were drawn by me.s
+    </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_1_im1_1.png"  height="160">
+            <figcaption>Noise level = 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im1_3.png"  height="160">
+            <figcaption>Noise level = 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im1_5.png"  height="160">
+            <figcaption>Noise level = 5</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im1_7.png"  height="160">
+            <figcaption>Noise level = 7</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im1_10.png"  height="160">
+            <figcaption>Noise level = 10</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im1_20.png"  height="160">
+            <figcaption>Noise level = 20</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im1org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_1_im2_1.png"  height="160">
+            <figcaption>Noise level = 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im2_3.png"  height="160">
+            <figcaption>Noise level = 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im2_5.png"  height="160">
+            <figcaption>Noise level = 5</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im2_7.png"  height="160">
+            <figcaption>Noise level = 7</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im2_10.png"  height="160">
+            <figcaption>Noise level = 10</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im2_20.png"  height="160">
+            <figcaption>Noise level = 20</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im2_org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_1_im3_1.png"  height="160">
+            <figcaption>Noise level = 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im3_3.png"  height="160">
+            <figcaption>Noise level = 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im3_5.png"  height="160">
+            <figcaption>Noise level = 5</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im3_7.png"  height="160">
+            <figcaption>Noise level = 7</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im3_10.png"  height="160">
+            <figcaption>Noise level = 10</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im3_20.png"  height="160">
+            <figcaption>Noise level = 20</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_1_im3_org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+    </div>
+
+    
+    <h4>Inpainting</h4>
+
+    <p>This function uses a binary mask to keep the original image in unmasked areas while filling in masked regions with 
+        new content through iterative denoising. I tested it by inpainting the top of the Campanile in the test image and 
+        also worked on two custom images with different masks.</p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_2_im1_org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im1_mask1.png"  height="160">
+            <figcaption>Mask</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im1_mask2.png"  height="160">
+            <figcaption>Hole to fill</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im1_in.png"  height="160">
+            <figcaption>Inpainted</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_2_im2_org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im2_mask.png"  height="160">
+            <figcaption>Mask</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im2_mask2.png"  height="160">
+            <figcaption>Hole to fill</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im2_in.png"  height="160">
+            <figcaption>Inpainted</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_2_im3_org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im3_mask.png"  height="160">
+            <figcaption>Mask</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im3_mask2.png"  height="160">
+            <figcaption>Hole to fill</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im3_in.png"  height="160">
+            <figcaption>Inpainted</figcaption>
+        </figure>
+    </div>
+    
+    <h4>Text-Conditional Image-to-image Translation</h4>
+
+    <p><p>For this step, I used the text prompt "a rocket ship" to shape how the image changed during denoising. By starting 
+        at various noise levels [1, 3, 5, 7, 10, 20], the process mixed rocket-themed details into the original image. This was
+    also done for two other images.</p>
+</p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_3_im1_1.png"  height="160">
+            <figcaption>Noise level = 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im1_3.png"  height="160">
+            <figcaption>Noise level = 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im1_5.png"  height="160">
+            <figcaption>Noise level = 5</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im1_7.png"  height="160">
+            <figcaption>Noise level = 7</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im1_10.png"  height="160">
+            <figcaption>Noise level = 10</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im1_20.png"  height="160">
+            <figcaption>Noise level = 20</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/test_im.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_3_im2_1.png"  height="160">
+            <figcaption>Noise level = 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im2_3.png"  height="160">
+            <figcaption>Noise level = 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im2_5.png"  height="160">
+            <figcaption>Noise level = 5</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im2_7.png"  height="160">
+            <figcaption>Noise level = 7</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im2_10.png"  height="160">
+            <figcaption>Noise level = 10</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im2_20.png"  height="160">
+            <figcaption>Noise level = 20</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im2_org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+    </div>
+
+    
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_7_3_im2_1.png"  height="160">
+            <figcaption>Noise level = 1</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im3_3.png"  height="160">
+            <figcaption>Noise level = 3</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im3_5.png"  height="160">
+            <figcaption>Noise level = 5</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im3_7.png"  height="160">
+            <figcaption>Noise level = 7</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im3_10.png"  height="160">
+            <figcaption>Noise level = 10</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_3_im3_20.png"  height="160">
+            <figcaption>Noise level = 20</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_7_2_im3_org.png"  height="160">
+            <figcaption>Original image</figcaption>
+        </figure>
+    </div>
+
+    <h3>Visual Anagrams</h3>
+    <p> In this part the UNet model was run twice: once to denoise the image normally and then to denoise it flipped upside down. 
+        This allowed me to create an image that shows one scene when viewed right side up and a different scene when flipped. 
+        Using the prompts in the captions below visual anagrams were created.</p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_8_im1_1.png"  height="250">
+            <figcaption>An oil painting of an old man</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_8_im1_2.png"  height="250">
+            <figcaption>An oil painting of people <br> around a campfire</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_8_im2_1.png"  height="250">
+            <figcaption>A man wearing a hat</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_8_im2_2.png"  height="250">
+            <figcaption>A lithograph of 
+                waterfalls</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_8_im3_1.png"  height="250">
+            <figcaption>A photo of a hipster <br> barista</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_8_im3_2.png"  height="250">
+            <figcaption>A photo of a dog</figcaption>
+        </figure>
+    </div>
+    <h3>Hybrid Images</h3>
+
+    <p>To create hybrid images, I adapted the previous approach by combining the denoised high-frequency image with the 
+        denoised low-frequency image instead of summing the normal and flipped denoised images. This method makes the 
+        high-frequency details visible up close and the low-frequency content visible from a distance. Using the following prompts
+        yielded three different images: "a lithograph of waterfalls" and "a lithograph of a skull", "a lithograph of a skull" and "a photo of a dog" 
+         and "a rocket ship" and "an oil painting of people around a campfire".</p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_10_im3.png"  height="250">
+            <figcaption>Waterfall</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_10_im3.png"  height="64">
+            <figcaption>A skull</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_10_im4.png"  height="250">
+            <figcaption>A dog</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_10_im4.png"  height="64">
+            <figcaption>A skull</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_10_im2.png"  height="250">
+            <figcaption>an oil painting of people <br> around a campfire</figcaption>
+        </figure>
+        <figure class="image-item">
+            <img src="media/1_10_im2.png"  height="64">
+            <figcaption>A rocket ship</figcaption>
+        </figure>
+    </div>
+
+    <h1>Part B: Diffusion Models from Scratch! </h1>
+
+    
+    <h1>Training a Single-Step Denoising UNet </h2>
+        <p>First the unconditioned UNet was implemented in accordance with the specifications presented down below.</p>
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/unet1.png"  height="400">
+                <figcaption>Unconditional UNet</figcaption>
+            </figure>
+        </div>
+
+    <h2>Implementing the UNet</h2>
+
+    <h2>Using the UNet to Train a Denoiser</h2>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/p_1_2_ex.png"  height="400">
+            <figcaption>Different noise levels</figcaption>
+        </figure>
+    </div>
+
+    <h3>Training</h3>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/p_1_2_train_loss.png"  height="400">
+            <figcaption>Training Loss Curve</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_2_ep1.png"  height="400">
+            <figcaption>Results on digits from the test set after 1 epoch of training</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_2_ep5.png"  height="400">
+            <figcaption>Results on digits from the test set after 5 epoch of training</figcaption>
+        </figure>
+    </div>
+
+
+    <h3>Out-of-Distribution Testing</h3>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/1_2_2.png"  height="400">
+            <figcaption>Results on digits from the test set with varying noise levels</figcaption>
+        </figure>
+    </div>
+
+
+    <h1>Training a Single-Step Denoising UNet </h2>
+    
+    <h2>Adding Time Conditioning to UNet</h2>
+
+    <h2>Training the UNet</h2>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/2_2_train_loss.png"  height="400">
+            <figcaption>Time-Conditioned UNet training loss curve</figcaption>
+        </figure>
+    </div>
+
+    <h2>Sampling from the UNet</h2>
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/2_3_ep5.png"  height="400">
+            <figcaption>Samples where Epoch = 5</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/2_3_ep5.png"  height="400">
+            <figcaption>Samples where Epoch = 20</figcaption>
+        </figure>
+    </div>
+
+    
+
+    
+
+    <h2>Adding Class-Conditioning to UNet</h2>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/2_4_train_loss.png"  height="400">
+            <figcaption>Class-conditioned UNet training loss curve</figcaption>
+        </figure>
+    </div>
+
+    <h2>Sampling from the Class-Conditioned UNet</h2>
+    
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/2_5_ep5.png"  height="400">
+            <figcaption>Samples where Epoch = 5</figcaption>
+        </figure>
+    </div>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/2_5_ep5.png"  height="400">
+            <figcaption>Samples where Epoch = 20</figcaption>
+        </figure>
+    </div>
+
+
+    <p><a href="../index.html">Back to Main Page</a></p>
+</body>
+</html>
