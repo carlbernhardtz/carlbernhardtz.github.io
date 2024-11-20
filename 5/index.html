@@ -827,7 +827,7 @@
     </div>
 
     <h3>Training</h3>
-    <p><p>For training, I used image-class pairs with a batch size of 256, 5 epochs, a sigma value of 0.5, and the Adam 
+    <p><p>For training, I used image-class pairs with a batch size of 256, 5 epochs,  \( \sigma = 0.5 \), and the Adam 
         optimizer set to a learning rate of 1e-3. The training loss is shown below.</p>
 </p>
     <div class="image-gallery">
@@ -854,6 +854,9 @@
 
 
     <h3>Out-of-Distribution Testing</h3>
+    <p>The model was trained on digits denoised with \( \sigma = 0.5 \). Below are the results when the denoiser is used on
+        digits with different levels of noise.
+    </p>
 
     <div class="image-gallery">
         <figure class="image-item">
@@ -863,11 +866,48 @@
     </div>
 
 
-    <h1>Training a Single-Step Denoising UNet </h2>
+    <h1>Training a Diffusion Model </h2>
+
+        <p>
+        In this section, a UNet model was trained to iteratively denoise images by predicting the noise added during the diffusion process. 
+        Instead of mapping a noisy image \( z \) back to a clean image \( x \), the UNet predicted the noise \( \epsilon \), as given by:
+        </p>
+        <p>
+        \[
+        L = \mathbb{E}_{\epsilon, z} \| \epsilon_\theta(z) - \epsilon \|^2,
+        \]
+        </p>
+        <p>
+        where \( z = x + \sigma \epsilon \), and \( \epsilon \sim \mathcal{N}(0, I) \).
+        </p>
+            
     
     <h2>Adding Time Conditioning to UNet</h2>
 
+        <p>
+        Time conditioning was introduced by embedding a normalized timestep \( t \) into the UNet using fully connected
+         (FC) blocks. It was implemented in accordance with the schematic below.
+        </p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/unet2.png"  height="400">
+            <figcaption>Time-Conditioned UNet training loss curve</figcaption>
+        </figure>
+    </div>
+
     <h2>Training the UNet</h2>
+
+    <p>The UNet was trained with the algorithm presented below.</p>
+
+    <div class="image-gallery">
+        <figure class="image-item">
+            <img src="media/alg1.png"  height="200">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+
+    <p>The training loss curve for the UNet is displayed below.</p>
 
     <div class="image-gallery">
         <figure class="image-item">
@@ -877,6 +917,9 @@
     </div>
 
     <h2>Sampling from the UNet</h2>
+
+
+    <p>The results from using the time conditioned UNet is displayed down below, both for 5 and 20 epochs.</p>
     <div class="image-gallery">
         <figure class="image-item">
             <img src="media/2_3_ep5.png"  height="400">
@@ -897,6 +940,18 @@
 
     <h2>Adding Class-Conditioning to UNet</h2>
 
+    <p>Lastly the Class-Conditioned UNet was implemented, conditioning the model on the class of the digit to be generated. 
+        This was achieved by adding two fully connected blocks to the UNet, using a one-hot encoded class label \( c \) as input. 
+        The training algorithm is presented down below.</p>
+
+
+        <div class="image-gallery">
+            <figure class="image-item">
+                <img src="media/alg2.png"  height="200">
+                <figcaption></figcaption>
+            </figure>
+        </div>
+        <p>The training loss curve for this UNet is displayed below.</p>
     <div class="image-gallery">
         <figure class="image-item">
             <img src="media/2_4_train_loss.png"  height="400">
@@ -906,6 +961,8 @@
 
     <h2>Sampling from the Class-Conditioned UNet</h2>
     
+        <p>The results from this last UNet are presented down below, both after 5 epochs and after 20.</p>
+
     <div class="image-gallery">
         <figure class="image-item">
             <img src="media/2_5_ep5.png"  height="400">
